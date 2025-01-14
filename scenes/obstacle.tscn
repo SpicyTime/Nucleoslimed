@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://3sqj2rp3kj03"]
+
+[ext_resource type="Script" path="res://scripts/obstacle.gd" id="1_nmre3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g4r8y"]
+
+[node name="Sprite2D" type="Sprite2D"]
+z_index = 2
+script = ExtResource("1_nmre3")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_g4r8y")
