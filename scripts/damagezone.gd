@@ -6,15 +6,14 @@ var parent = get_parent()
 func _ready():
 	parent = get_parent()
 func _on_body_entered(body: Node2D) -> void:
-	if parent.has_meta("is_attached") and body != parent:
+	if body is CharacterBody2D and body != player and body != parent:
 		parent.is_attached = true
-		print("is attached is true")
+		print("Attached to " , body)
 	if body.has_method("_on_interact"):
 		body._on_interact()
 		
 	if body.has_method("reduce_health"):
-		pass
-		#body.reduce_health(1)
+		body.reduce_health(1)
 	 
 		 
 	 

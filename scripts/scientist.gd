@@ -20,7 +20,9 @@ var current_animation: String = "idle"
 var is_satisfied: bool = false
 var is_interacting: bool = false
 func handle_interaction():
-	is_interacting = true
+	is_satisfied = true
+	label.text = "Satisfied"
+	#is_interacting = true
 	#print("Scientist is being interacted with")
 
 func reduce_health(damage: int):
@@ -62,7 +64,12 @@ func handle_flip(direction):
 		anim.flip_h = true
 
 func wait_at_point() -> void:
+	if is_satisfied:
+		print("freeing by satisfaction")
+		queue_free()
+		return
 	waiting = true
+	
 	await get_tree().create_timer(wait_time).timeout
 	set_wander_pos()
 
@@ -70,7 +77,11 @@ func _ready() -> void:
 	set_wander_pos()
 	current_task = task.pick_task()
 	label.text = current_task
-
+func _process(_f):
+	if is_satisfied:
+		waiting = false
+		is_interacting = false
+		wander_position = Vector2(-250, -250)
 func _physics_process(delta: float) -> void:
 	var direction = (wander_position - global_position).normalized()
 	if not waiting and not is_interacting:

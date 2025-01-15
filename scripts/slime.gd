@@ -15,7 +15,11 @@ func _physics_process(delta: float) -> void:
 		animated_sprite.play("bounce")
 	else:
 		animated_sprite.play("idle")
+	
 	velocity = direction  * movement_speed
+	if is_attached:
+		pass
+		#velocity = Vector2()
 	move_and_collide(velocity * delta)
  
 func _on_vision_area_body_entered(body: Node2D) -> void:
