@@ -9,7 +9,6 @@ extends CharacterBody2D
 @export var bounds: Array[int] = [-190, 190, -128, 128]
 @export var wait_time: float = 2.5
 @onready var player: CharacterBody2D = get_node("%Player")  # Use get_node() in 4.x
-signal player_interact
 var current_task: String
 var is_dead: bool = false
 var is_hit: bool = false
@@ -20,9 +19,9 @@ var waiting: bool = false
 var current_animation: String = "idle"
 var is_satisfied: bool = false
 var is_interacting: bool = false
-
 func handle_interaction():
 	is_interacting = true
+	#print("Scientist is being interacted with")
 
 func reduce_health(damage: int):
 	health -= damage
@@ -94,7 +93,6 @@ func _on_anim_animation_finished() -> void:
 		current_animation = "idle"
 
 func _on_interact() -> void:
-	print("Scientist is being interacted with")
 	handle_interaction()
 func interact():
-	print("Scientist is being interacted with")
+	pass

@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var timer: Timer = $VisionArea/Timer
 var character_direction: Vector2
 var target: CharacterBody2D
+var is_attached: bool = false
 func _physics_process(delta: float) -> void:
 	var direction: Vector2
 	if target and is_instance_valid(target):
