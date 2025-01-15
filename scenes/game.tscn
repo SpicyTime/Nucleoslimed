@@ -48,21 +48,21 @@ limit_bottom = 128
 position = Vector2(-164, -132)
 
 [node name="Slime2" parent="Slimes" instance=ExtResource("2_gidrb")]
-position = Vector2(203, 106)
+position = Vector2(-144, -138)
 
 [node name="Slime3" parent="Slimes" instance=ExtResource("2_gidrb")]
-position = Vector2(183, -118)
+position = Vector2(-146, -122)
 
 [node name="Scientists" type="Node" parent="."]
 
 [node name="Scientist" parent="Scientists" instance=ExtResource("3_d43ok")]
-position = Vector2(-46, 30)
+position = Vector2(63, -74)
 
 [node name="Scientist2" parent="Scientists" instance=ExtResource("3_d43ok")]
-position = Vector2(32, 70)
+position = Vector2(100, 53)
 
 [node name="Scientist3" parent="Scientists" instance=ExtResource("3_d43ok")]
-position = Vector2(-48, -52)
+position = Vector2(-69, -45)
 
 [node name="Scientist4" parent="Scientists" instance=ExtResource("3_d43ok")]
 position = Vector2(117, -21)

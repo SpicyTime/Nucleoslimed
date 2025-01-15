@@ -12,7 +12,7 @@ var is_hit = false
 var current_anim: String = "idle"
 var is_active: bool = true
 var interactable_bodies: Array[Node2D]
-
+var in_damage_zone = false
 func play_animation(anim: String):
 	if current_anim == anim:
 		return
@@ -88,9 +88,7 @@ func _on_timer_timeout() -> void:
 
 func _on_interact_zone_body_entered(body: Node2D) -> void:
 	if body.has_method("handle_interaction") and not body in interactable_bodies:
-		print("Connecting scientist")
 		interactable_bodies.append(body)
 func _on_interact_zone_body_exited(body: Node2D) -> void:
 	if body in interactable_bodies:
-		print("Disconnecting scientist")
 		interactable_bodies.erase(body)

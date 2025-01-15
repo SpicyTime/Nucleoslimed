@@ -19,6 +19,8 @@ var waiting: bool = false
 var current_animation: String = "idle"
 var is_satisfied: bool = false
 var is_interacting: bool = false
+var in_damage_zone = false
+var has_slime_attached: = false
 func handle_interaction():
 	is_satisfied = true
 	label.text = "Satisfied"
@@ -34,10 +36,12 @@ func reduce_health(damage: int):
 		current_animation = "death"
 
 func set_wander_pos() -> void:
+	
 	var rng = RandomNumberGenerator.new()
 	var rand_x: int = rng.randf_range(bounds[0], bounds[1])
 	var rand_y: int = rng.randf_range(bounds[2], bounds[3])
-	wander_position = Vector2(rand_x, rand_y)
+	wander_position = Vector2(rand_x, rand_y) # sets the wander position to the random x and y vals
+	
 	waiting = false
 
 func handle_animations() -> void:
@@ -51,6 +55,8 @@ func handle_animations() -> void:
 		play("idle")
 
 func play(animation: String) -> void:
+	# if both the mask and the actual animation node has the animation 
+	#it will be played
 	if mask.sprite_frames.has_animation(animation) and anim.sprite_frames.has_animation(animation):
 		mask.play(animation)
 		anim.play(animation)
@@ -65,7 +71,7 @@ func handle_flip(direction):
 
 func wait_at_point() -> void:
 	if is_satisfied:
-		print("freeing by satisfaction")
+		#print("freeing by satisfaction")
 		queue_free()
 		return
 	waiting = true

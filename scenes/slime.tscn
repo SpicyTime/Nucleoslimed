@@ -4,7 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://bym0qxauvfqo3" path="res://assets/SlimeAssets/Assets/BouncingSpritesheet.png" id="1_jsrc7"]
 [ext_resource type="Texture2D" uid="uid://blcmcngt25kqe" path="res://assets/SlimeAssets/Assets/DeathSpritesheet.png" id="2_sap0m"]
 [ext_resource type="Texture2D" uid="uid://b4q26rmju4dxb" path="res://assets/SlimeAssets/Assets/IdleSpritesheet.png" id="3_lh3mw"]
-[ext_resource type="PackedScene" uid="uid://dlaw0tcxbx6hq" path="res://scenes/damagzone.tscn" id="4_qo4o0"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4jut6"]
 atlas = ExtResource("1_jsrc7")
@@ -164,16 +163,17 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_77paj"]
-radius = 5.0
-height = 12.0
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_eqi6g"]
 radius = 3.0
 height = 10.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_01ti4"]
 radius = 74.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vjggk"]
+radius = 16.1245
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4402i"]
 
 [node name="Slime" type="CharacterBody2D"]
 z_index = 3
@@ -184,12 +184,6 @@ script = ExtResource("1_bdc8l")
 sprite_frames = SubResource("SpriteFrames_e0dk8")
 animation = &"idle"
 autoplay = "idle"
-
-[node name="damagezone" parent="." instance=ExtResource("4_qo4o0")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="damagezone"]
-position = Vector2(0, 2)
-shape = SubResource("CapsuleShape2D_77paj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
@@ -206,7 +200,19 @@ shape = SubResource("CircleShape2D_01ti4")
 wait_time = 2.5
 one_shot = true
 
+[node name="attach_radius" type="Area2D" parent="VisionArea"]
+
+[node name="attach_radius_coll" type="CollisionShape2D" parent="VisionArea/attach_radius"]
+shape = SubResource("CircleShape2D_vjggk")
+
+[node name="damage_area" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="damage_area"]
+shape = SubResource("CircleShape2D_4402i")
+
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="body_entered" from="VisionArea" to="." method="_on_vision_area_body_entered"]
 [connection signal="body_exited" from="VisionArea" to="." method="_on_vision_area_body_exited"]
 [connection signal="timeout" from="VisionArea/Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="VisionArea/attach_radius" to="." method="_on_attach_radius_body_entered"]
+[connection signal="body_entered" from="damage_area" to="." method="_on_damage_area_body_entered"]
