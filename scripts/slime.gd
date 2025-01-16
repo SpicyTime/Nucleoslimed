@@ -60,9 +60,12 @@ func _physics_process(delta: float) -> void:
 func _on_vision_area_body_entered(body: Node2D) -> void:
 	movement_speed = 50
 	if not is_attached:
-		target = body
+		if body.has_method("set_wander_pos"):
+			if not body.is_satisfied:
+				target = body
+		else:
+			target = body
 	timer.stop()
-
 func _on_vision_area_body_exited(_body: Node2D) -> void:
 	timer.start()
 
@@ -70,12 +73,18 @@ func _on_timer_timeout() -> void:
 	movement_speed = 0
 	
 func _on_attach_radius_body_entered(body: Node2D) -> void:
-	if body is CharacterBody2D and body != player and body != self:
-		# Prevent attaching to other slimes
-		if not body.has_method("attach"):
+	# Check if the body is a CharacterBody2D and not the player or self
+	if not (body is CharacterBody2D and body != player and body != self):
+		return
+	# Prevent attaching to other slimes without the "attach" method
+	if body.has_method("attach"):
+		return
+ 	# If the body has "set_wander_position" and is not satisfied, attach it
+	if body.has_method("set_wander_pos"):
+		if not body.is_satisfied:
 			attach(body)
 
 
-func _on_damage_area_body_entered(body: Node2D) -> void:
-	if body.has_method("reduce_health"):
+func _on_damage_area_body_entered(body: Node2D) -> void: 
+	if( body.has_method("reduce_health") and is_attached) or (body == player and not is_attached):
 		body.reduce_health(1)

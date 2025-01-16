@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dfgwjfye31sh7"]
+
+[ext_resource type="Script" path="res://scripts/item.gd" id="1_1w0dl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w8cca"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gxadv"]
+
+[node name="Item" type="StaticBody2D"]
+script = ExtResource("1_1w0dl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_w8cca")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_gxadv")

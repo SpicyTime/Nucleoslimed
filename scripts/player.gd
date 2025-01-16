@@ -13,20 +13,34 @@ var current_anim: String = "idle"
 var is_active: bool = true
 var interactable_bodies: Array[Node2D]
 var in_damage_zone = false
+var held_item: StaticBody2D
 func play_animation(anim: String):
 	if current_anim == anim:
 		return
 	current_anim = anim
 	animated_sprite.play(current_anim)
+func hold(item: StaticBody2D):
+	if not item:
+		return
+	held_item = item
+	held_item.get_parent().remove_child(held_item)
+	add_child(held_item)
+	held_item.position = Vector2.ZERO  # Reset position relative to the player
 
+func drop_item():
+	if held_item:
+		remove_child(held_item)
+	get_parent().add_child(held_item)
+	held_item.global_position = global_position  # Drop it at the player's position
+	held_item = null
 func handle_input():
 	character_direction.x = Input.get_axis("move_left", "move_right")
 	character_direction.y = Input.get_axis("move_up", "move_down")
 	if Input.is_action_just_pressed("interact"):
-		var closest_character: CharacterBody2D = null
+		var closest_character = null
 		var shortest_distance = INF
 		for character in interactable_bodies:
-			if character and character is CharacterBody2D:
+			if character:
 				if not is_instance_valid(character):
 					interactable_bodies.erase(character)
 					continue
@@ -35,8 +49,12 @@ func handle_input():
 					shortest_distance = distance
 					closest_character = character
 		if closest_character:
+			print(closest_character)
 			if closest_character.has_method("_on_interact"):
 				closest_character._on_interact()
+			if closest_character.has_method("is_item"):
+				hold(closest_character)
+					 
  
 func handle_animations():
 	if is_dead:
@@ -73,7 +91,8 @@ func _physics_process(delta: float) -> void:
 		velocity = velocity.move_toward(Vector2.ZERO, movement_speed)
 	handle_animations()
 	move_and_collide(velocity * delta)
-
+	if held_item:
+		held_item.position = Vector2.ZERO
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if animated_sprite.animation == "death":
 		animated_sprite.queue_free()
@@ -88,6 +107,7 @@ func _on_timer_timeout() -> void:
 
 func _on_interact_zone_body_entered(body: Node2D) -> void:
 	if body.has_method("handle_interaction") and not body in interactable_bodies:
+		print(body)
 		interactable_bodies.append(body)
 func _on_interact_zone_body_exited(body: Node2D) -> void:
 	if body in interactable_bodies:

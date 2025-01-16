@@ -1,8 +1,9 @@
 extends Node2D
 @onready var sprite: Sprite2D = $"."
-@onready var collision_shape: CollisionShape2D = $Area2D/CollisionShape2D
+@onready var collision_shape: CollisionShape2D = $PickupArea/CollisionShape2D
 
 # Called when the node enters the scene tree for the first time.
+	
 func _ready() -> void:
 	if sprite.texture:
 		var texture_width = sprite.texture.get_width()

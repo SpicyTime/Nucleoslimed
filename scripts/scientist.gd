@@ -22,8 +22,10 @@ var is_interacting: bool = false
 var in_damage_zone = false
 var has_slime_attached: = false
 func handle_interaction():
-	is_satisfied = true
-	label.text = "Satisfied"
+	
+	is_satisfied = true and not has_slime_attached
+	if is_satisfied:
+		label.text = "Satisfied"
 	#is_interacting = true
 	#print("Scientist is being interacted with")
 
@@ -70,7 +72,7 @@ func handle_flip(direction):
 		anim.flip_h = true
 
 func wait_at_point() -> void:
-	if is_satisfied:
+	if is_satisfied :
 		#print("freeing by satisfaction")
 		queue_free()
 		return
